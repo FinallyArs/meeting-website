@@ -156,11 +156,11 @@ MEDIA_ROOT = '/home/arseny/website/media/'
 MEDIA_URL = 'arseny/website/media/' or '/meeting/meeting/arseny/website/media/'
 
 
-STATIC_ROOT = '/home/arseny/website/meeting/static/meeting/'
-STATIC_URL = '/home/arseny/website/meeting/static/meeting/'
-#STATICFILES_DIRS = [
- #   'meeting/static',
-#]
+STATIC_ROOT = '/home/arseny/website/static/meeting/'
+STATIC_URL = '/home/arseny/website/static/meeting/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
