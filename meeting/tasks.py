@@ -1,16 +1,10 @@
-import time
 from datetime import timedelta, datetime
-
-from celery.schedules import crontab
-from celery.task import periodic_task
-from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-
-from celery import shared_task, app
+from celery import shared_task
 from django.template.loader import get_template
-
 from meeting.models import Profile, Message
 from website import settings
+
 
 @shared_task
 def new_messages_email():
@@ -28,8 +22,6 @@ def send_user_email(user_id, product_ids):
     messages = Message.objects.all()
     template = get_template('email.html')
 
-
-
     email_message = ''
     for message in messages:
         email_message += f'{message}'
@@ -39,9 +31,9 @@ def send_user_email(user_id, product_ids):
         from_email=settings.ADMIN_EMAIL,
         recipient_list=[user.email],
         html_message=template.render(context={
-        'user': user,
-        'messages': messages
-    })
+            'user': user,
+            'messages': messages
+        })
 
     )
 
@@ -56,6 +48,3 @@ SCHEDULE = {
         'schedule': timedelta(seconds=5),
     }
 }
-
-
-

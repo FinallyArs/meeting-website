@@ -1,27 +1,18 @@
-import profile
-from datetime import date, timedelta
-
 from django.contrib import messages, auth
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import HttpResponseRedirect, BadHeaderError, HttpResponse
-
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
-from django.template.context_processors import csrf, request
-from django.urls import reverse_lazy, reverse
-from django.views.generic import DetailView, TemplateView, ListView, FormView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, FormView
 from django.views import View
 from django.shortcuts import reverse
-
-from website import settings
 from .forms import RegistrationForm, ProfileForm, MessageForm
-from .models import User, Profile, Chat
+from .models import Profile, Chat
 from .forms import ContactForm
 from django.core.mail import send_mail
-from django.template import RequestContext
 
 
 class UserListView(ListView):
@@ -31,20 +22,25 @@ class UserListView(ListView):
     template_name = 'users_list.html'
 
 
-
 @login_required
 def user_details(request, pk):
     user = get_object_or_404(Profile, pk=pk)
     is_liked = False
     if user.likes.filter(id=request.user.id).exists():
         is_liked = True
-    if user.birth_date == None:
+    if user.birth_date is None:
         return render(request, 'user_details.html', context={
-            'user': user, 'is_liked': is_liked, 'total_likes': user.total_likes(),
-            'get_online_info': user.get_online_info(), 'is_online': user.is_online()})
+            'user': user,
+            'is_liked': is_liked,
+            'total_likes': user.total_likes(),
+            'get_online_info': user.get_online_info(),
+            'is_online': user.is_online()})
     return render(request, 'user_details.html', context={
-        'user': user, 'is_liked': is_liked, 'total_likes': user.total_likes(), 'age': user.age(),
-        'get_online_info': user.get_online_info(), 'is_online': user.is_online()
+        'user': user, 'is_liked': is_liked,
+        'total_likes': user.total_likes(),
+        'age': user.age(),
+        'get_online_info': user.get_online_info(),
+        'is_online': user.is_online()
     })
 
 
@@ -61,14 +57,6 @@ def like_profile(request):
     return redirect('user_detail', pk=user.pk)
 
 
-
-
-
-
-
-
-
-
 class HomeView(TemplateView):
     template_name = "home.html"
 
@@ -83,12 +71,10 @@ class RegistrationView(FormView):
         user = authenticate(self.request,
                             username=form.cleaned_data['username'],
                             password=form.cleaned_data['password1']
-        )
-        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+                            )
+        login(self.request, user,
+              backend='django.contrib.auth.backends.ModelBackend')
         return super().form_valid(form)
-
-
-
 
 
 class ProfileView(TemplateView):
@@ -97,7 +83,7 @@ class ProfileView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         if not Profile.objects.filter(user=request.user).exists():
             return redirect(reverse("edit_profile"))
-        if request.user.profile.birth_date == None:
+        if request.user.profile.birth_date is None:
             context = {
                 'selected_user': request.user,
                 'is_online': request.user.profile.is_online(),
@@ -121,7 +107,8 @@ class EditProfileView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         form = ProfileForm(instance=self.get_profile(request.user))
         if request.method == 'POST':
-            form = ProfileForm(request.POST, request.FILES, instance=self.get_profile(request.user))
+            form = ProfileForm(request.POST, request.FILES,
+                               instance=self.get_profile(request.user))
             if form.is_valid():
                 form.instance.user = request.user
                 form.save()
@@ -136,11 +123,11 @@ class EditProfileView(TemplateView):
             return None
 
 
-
 class DialogsView(View):
     def get(self, request):
         chats = Chat.objects.filter(members__in=[request.user.profile.id])
-        return render(request, 'dialogs.html', {'user_profile': request.user, 'chats': chats})
+        return render(request, 'dialogs.html', {'user_profile': request.user,
+                                                'chats': chats})
 
 
 class MessagesView(View):
@@ -148,7 +135,8 @@ class MessagesView(View):
         try:
             chat = Chat.objects.get(id=chat_id)
             if request.user.profile in chat.members.all():
-                chat.message_set.filter(is_readed=False).exclude(author=request.user.profile).update(is_readed=True)
+                chat.message_set.filter(is_readed=False).exclude(
+                    author=request.user.profile).update(is_readed=True)
             else:
                 chat = None
         except Chat.DoesNotExist:
@@ -174,12 +162,15 @@ class MessagesView(View):
         return redirect(reverse('messages', kwargs={'chat_id': chat_id}))
 
 
-
 class CreateDialogView(View):
     def get(self, request, user_id):
         user = get_object_or_404(Profile, id=user_id)
-        chats = Chat.objects.filter(members__in=[request.user.profile, user_id], type=Chat.DIALOG).annotate(c=Count('members')).filter(c=2)
-        if user.likes.filter(id=request.user.id).exists() and request.user.profile.likes.filter(id=user_id).exists() and chats.count() == 0:
+        chats = Chat.objects.filter(
+            members__in=[request.user.profile, user_id],
+            type=Chat.DIALOG).annotate(c=Count('members')).filter(c=2)
+        if user.likes.filter(id=request.user.id).exists() \
+                and request.user.profile.likes.filter(id=user_id).exists() \
+                and chats.count() == 0:
             chat = Chat.objects.create()
             chat.members.add(request.user.profile)
             chat.members.add(user_id)
@@ -187,39 +178,44 @@ class CreateDialogView(View):
             chat = Chat.objects.create()
             chat.members.add(request.user.profile)
             chat.members.add(user_id)
-        if not user.likes.filter(id=request.user.id).exists() and request.user.profile.likes.filter(id=user_id).exists():
-            messages.error(request, u"Impossible to start chat. This user hasn't liked you yet.")
+        if not user.likes.filter(id=request.user.id).exists() \
+                and request.user.profile.likes.filter(id=user_id).exists():
+            messages.error(
+                request,
+                u"Impossible to start chat. This user hasn't liked you yet.")
             return redirect('user_detail', pk=user.pk)
         return redirect(reverse('messages', kwargs={'chat_id': chat.id}))
 
 
+def contactform(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            sender = form.cleaned_data['sender']
+            message = form.cleaned_data['message']
+            copy = form.cleaned_data['copy']
+
+            recepients = ['finallyars99@gmail.com']
+            if copy:
+                recepients.append(sender)
+            try:
+                send_mail(subject,
+                          message,
+                          'finallyars99@gmail.com',
+                          recepients)
+            except BadHeaderError:
+                return HttpResponse('Invalid header found')
+            return HttpResponseRedirect('thanks')
+
+    else:
+        form = ContactForm()
+    return render(request,
+                  'contacts.html',
+                  {'form': form,
+                   'username': auth.get_user(request).username})
 
 
-def contactform(reguest):
-        if reguest.method == 'POST':
-            form = ContactForm(reguest.POST)
-            if form.is_valid():
-                subject = form.cleaned_data['subject']
-                sender = form.cleaned_data['sender']
-                message = form.cleaned_data['message']
-                copy = form.cleaned_data['copy']
-
-                recepients = ['finallyars99@gmail.com']
-                if copy:
-                    recepients.append(sender)
-                try:
-                    send_mail(subject, message, 'finallyars99@gmail.com', recepients)
-                except BadHeaderError:
-                    return HttpResponse('Invalid header found')
-                return HttpResponseRedirect('thanks')
-
-        else:
-            form = ContactForm()
-        return render(reguest, 'contacts.html', {'form': form, 'username': auth.get_user(reguest).username})
-
-
-def thanks(reguest):
+def thanks(request):
     thanks = 'thanks'
-    return render(reguest, 'registration/thanks.html', {'thanks': thanks})
-
-
+    return render(request, 'registration/thanks.html', {'thanks': thanks})

@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'kmi&5f%$6n**$g3alwv@b=zwqj(0=72yvo8w(997l_unqf9f@!'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -56,13 +54,12 @@ INSTALLED_APPS = [
 
 ]
 
-SOCIALACCOUNT_PROVIDERS = {'facebook': {'METHOD': 'oauth2',
-                                'SCOPE': ['email'],
-                                'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-                                'LOCALE_FUNC': lambda request: 'en_US',
-                                'VERSION': 'v2.4'
-                               }
-
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {'METHOD': 'oauth2',
+                 'SCOPE': ['email'],
+                 'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+                 'LOCALE_FUNC': lambda request: 'en_US',
+                 'VERSION': 'v2.4'}
 }
 
 SITE_ID = 3
@@ -74,8 +71,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'django.middleware.clickjacking.XFrameOptionsMiddleware']
 
 ROOT_URLCONF = 'website.urls'
 
@@ -98,7 +94,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'website.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -112,7 +107,6 @@ DATABASES = {
         'PORT': '5432'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -132,11 +126,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
-
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -150,12 +139,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 MEDIA_ROOT = '/home/arseny/website/media/'
 MEDIA_URL = 'arseny/website/media/' or '/meeting/meeting/arseny/website/media/'
-
 
 STATIC_ROOT = '/home/arseny/website/static/meeting/'
 STATIC_URL = '/home/arseny/website/static/meeting/'
@@ -166,7 +153,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-
 
 PAGE_SIZE = 12
 
@@ -180,16 +166,12 @@ BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
 CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/2'
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 
-
-
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.sendinblue.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'finallyars99@gmail.com'
 EMAIL_HOST_PASSWORD = 'xsmtpsib-f7b2a57ca2138018f7c011cc3aa3fd0a21a78ba4f99510f9621a1905b60794d0-2RvMp0ZCUmFQLTna'
 ADMIN_EMAIL = 'finallyars99@gmail.com'
-
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

@@ -1,22 +1,12 @@
-from datetime import timedelta, date, datetime
-
-from django.contrib.auth.base_user import AbstractBaseUser
+from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags.humanize import naturaltime
-from django.contrib.postgres.fields import JSONField
-import base64
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-
-from django.conf import settings
-
 from django.db import models
-from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _, get_language
-
+from django.utils.translation import gettext_lazy as _
 
 
 class Profile(models.Model):
@@ -66,7 +56,6 @@ class Profile(models.Model):
         if created:
             Profile.objects.create(user=instance)
 
-
     def __str__(self):
         return str(self.user) if self.user else ''
 
@@ -81,7 +70,9 @@ class Profile(models.Model):
 
     def is_online(self):
         if self.last_online:
-            return (timezone.now() - self.last_online) < timezone.timedelta(minutes=15)
+            return (
+                timezone.now() - self.last_online) < timezone.timedelta(
+                minutes=15)
         return False
 
     def get_online_info(self):
@@ -90,8 +81,6 @@ class Profile(models.Model):
         if self.last_online:
             return 'Last visit {}'.format(naturaltime(self.last_online))
         return 'Unknown'
-
-
 
 
 class Chat(models.Model):
@@ -108,7 +97,6 @@ class Chat(models.Model):
         default=DIALOG)
     members = models.ManyToManyField(Profile)
 
-
     def get_absolute_url(self):
         return 'meeting:messages', (), {'chat_id': self.pk}
 
@@ -121,15 +109,7 @@ class Message(models.Model):
     is_readed = models.BooleanField(default=False)
 
     class Meta:
-        ordering=['pub_date']
+        ordering = ['pub_date']
 
     def __str__(self):
         return self.message
-
-
-
-
-
-
-
-
