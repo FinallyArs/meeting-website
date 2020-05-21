@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block content %}
+    <div class="container content" style="text-align: center;">
+        <div style="display: inline-block; width: 300px;">
+            <h2>Login Meeting website</h2>
+
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input  type="submit" class="btn btn-success" value="Log In">
+            </form>
+            <form class="form-inline my-2 my-lg-0">
+                <a role="button" href="{% url 'custom_reset_password' %}" class="btn btn-outline-success my-2 my-sm-0" type="submit">Lost password?</a>
+            </form>
+             <a class="btn btn-social-icon btn-sm btn-facebook" href="{% provider_login_url "facebook" method="oauth2" %}">
+    <span class="fa fa-facebook"></span>
+  </a>
+
+
+        </div>
+    </div>
+{% endblock %}

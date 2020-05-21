@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container content" style="text-align: center;">
+        <div style="width: 300px; display: inline-block;">
+            <h2>Registration</h2>
+            <form action="{% url 'registration' %}" method="post">>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Registration</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

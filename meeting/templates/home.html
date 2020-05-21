@@ -1,0 +1,22 @@
+<div class="home-bg">
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <div class="container-fluid" >
+        <h2 class="text-center" style="font-size: 40pt; color: #ba8b00"><strong>Welcome to Hi,Bro!</strong></h2>
+        <h3 class="text-center" style="font-size: 70pt; color: #ba8b00"><strong></strong>Match. Chat. Date.</h3>
+        <div class="text-center">
+            {% if not request.user.is_authenticated %}
+            <a role="button" href="{% url 'login' %}" class="btn btn-success my-2 my-sm-0" type="submit">Log in</a>
+            <a role="button" href="{% url 'registration' %}" class="btn btn-info my-2 my-sm-0" type="submit">Sign Up</a>
+                {% else %}
+                <a style="font-size: 30pt; color: #c69500"><strong>Hello again, {{ request.user.username }}</strong></a>
+                <a role="button" href="{% url 'list' %}" class="btn btn-success my-2 my-sm-0" type="submit">Let's surf!</a>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+</div>

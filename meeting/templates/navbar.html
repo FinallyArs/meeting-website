@@ -1,0 +1,90 @@
+{% load static %}
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark default-color">
+     <img src="{% static 'meeting/images/logo.png' %}" class="rounded-circle" style="height:70px; width: 70px">
+  <a class="navbar-brand" href="{% url 'home' %}" style="font-size: xx-large; color: #062c33">Hi,bro</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
+    aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+      <li class="nav-item">
+        <a class="nav-link waves-effect waves-light">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link waves-effect waves-light">
+          <i class="fab fa-google-plus-g"></i>
+        </a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-333" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right dropdown-default"
+          aria-labelledby="navbarDropdownMenuLink-333">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+    </ul>
+  <a href="https://twitter.com/share?url=http://127.0.0.1:8000/{{ profile.get_absolute_url }}"
+   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+   target="_blank" rel="nofollow">
+    <img src="{% static 'meeting/images/social/twitter_logo.png' %}"  height="30", width="30">
+</a>
+  <a href="https://plus.google.com/share?url=http://127.0.0.1:8000/{{ profile.get_absolute_url }}"
+   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+   target="_blank" rel="nofollow">
+    <img src="{% static 'meeting/images/social/google_logo.png' %}"  height="30", width="30">
+</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/meeting/accounts{{ profile.url }}"
+   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+   target="_blank" rel="nofollow">
+    <img src="{% static 'meeting/images/social/facebook-logo.png' %}"  height="30", width="30">
+</a>
+  <a href="http://vk.com/share.php?url=http://127.0.0.1:8000/{{ profile.get_absolute_url }}"
+   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+   target="_blank" rel="nofollow">
+    <img src="{% static 'meeting/images/social/vk-logo.png' %}" height="30", width="30">
+</a>
+      <form class="form-inline my-2 my-lg-0">
+            {% if not request.user.is_authenticated %}
+              <a role="button" href="{% url 'login' %}" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</a>
+                <a role="button" href="{% url 'registration' %}" class="btn btn-outline-info my-2 my-sm-0" type="submit">Sign Up</a>
+            {% else %}
+                <a role="button" href="{% url 'profile' pk=user.pk %}" class="btn btn-outline-success my-2 my-sm-0" type="submit">{{ request.user }}</a>
+              <a role="button" href="{% url 'logout' %}" class="btn btn-outline-info my-2 my-sm-0" type="submit">Log Out</a>
+            {% endif %}
+        </form>
+  <ul></ul>
+
+    <div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'list' %}">Surf!</a>
+        {% else %}
+            <a class="nav-link" href="#">Login to start surf!</a>
+        {% endif %}
+            <a href="{% url 'dialogs' %}"> Your Dialogs</a>
+            <a href="#">Clients</a>
+            <a href="{% url 'contacts' %}">Contact</a>
+</div>
+
+<span style="font-size:40px;cursor:pointer"
+      onclick="openNav()">&#9776</span>
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+  </div>
+</nav>

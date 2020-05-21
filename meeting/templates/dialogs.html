@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load tag %}
+{% load static %}
+{% block content %}
+<div class="card">
+        {% load tz %}
+        {% if chats.count == 0 %}
+            <div class="card-body">
+                <a>You have no chats</a>
+            </div>
+        {% else %}
+        {% for chat in chats %}
+            {% if chat.message_set.count != 0 %}
+                {% with last_message=chat.message_set.last %}
+                    {% get_second_user user chat as second_user %}
+                    <a class="list-group-item {% if second_user == last_message.author and not last_message.is_readed %}unreaded{% endif %}" href="{% url 'messages' chat_id=chat.id %}">
+                        {% if second_user.avatar %}
+                        <img class="avatar-messages" src="/meeting/arseny/website/media/{{ second_user.avatar }}" style="height: 20px; width: 20px">
+                        {% else %}
+                        <img class="avatar-messages" src="{% static 'meeting/images/user_logo.png' %}" style="height: 20px; width: 20px">
+                        {% endif %}
+                        <div class="reply-body">
+                            <ul class="list-inline">
+                                <li class="drop-left-padding">
+                                    <strong class="list-group-item-heading">{{ second_user.username }}</strong>
+                                </li>
+                                <li class="pull-right text-muted"><small>{{ last_message.pub_date|utc }}</small></li>
+                            </ul>
+                            {% if second_user != last_message.author %}
+                                <div>
+                                {% if last_message.author.avatar %}
+                                    <img class="avatar-rounded-sm" src="/meeting/arseny/website/media/{{ last_message.author.avatar }}" style="height: 20px; width: 20px">
+                                    {% else %}
+                                    <img class="avatar-rounded-sm" src="{% static 'meeting/images/user_logo.png' %}" style="height: 20px; width: 20px"></a>
+                                    {% endif %}
+                                    <div class="attached-reply-body {% if not last_message.is_readed %}unreaded{% endif %}">{{ last_message.message|truncatechars_html:"200"|safe|striptags }}</div>
+                                </div>
+                            {% else %}
+                                <div>{{ last_message.message|truncatechars_html:"200"|safe|striptags }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endwith %}
+            {% endif %}
+        {% endfor %}
+{% endif %}
+    </div>
+{% endblock content %} }}

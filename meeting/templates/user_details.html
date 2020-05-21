@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container content">
+        <div class="row">
+           <h2 style="margin-left: 20px; color: #a41515; font-size: 40px">{{ user.username }}, {{ age }}</h2>
+        <span class="text-muted">{{ user.get_online_info }}</span>
+            {% if is_online %}
+            <div class="online">Online</div>
+                {% else %}
+                <div class="offline">Offline</div>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-5">
+                {% with user_image=user.avatar %}
+                    {% if user_image %}
+                        <img src="/meeting/arseny/website/media/{{ user_image }}" class="avatar-img img-thumbnail" alt="img">
+                    {% else %}
+                        <img src="{% static 'meeting/images/user_logo.png' %}" class="avatar-img img-thumbnail">
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="col">
+                <dl class="row">
+                    <dt class="col-sm-3 text-right">Full Name</dt>
+                    <dd class="col-sm-9">{{ user.profile.first_name }} {{ user.profile.last_name }} </dd>
+
+                    <dt class="col-sm-3 text-right">Birth Date</dt>
+                    <dd class="col-sm-9">{{ user.profile.birth_date }}</dd>
+
+                    <dt class="col-sm-3 text-right">Address</dt>
+                    <dd class="col-sm-9">{{ user.profile.address }}</dd>
+
+                    <dt class="col-sm-3 text-right">Gender</dt>
+                    <dd class="col-sm-9">{{ user.profile.gender  }} </dd>
+
+                    <dt class="col-sm-3 text-right">Relation</dt>
+                    <dd class="col-sm-9">{{ user.profile.relation  }} </dd>
+
+                    <dt class="col-sm-3 text-right">About Yourself</dt>
+                    <dd class="col-sm-9">{{ user.profile.bio  }} </dd>
+
+                    <dt class="col-sm-3 text-right">Put like or dislike</dt>
+                    <dd class="col-sm-9">
+                        <form action="{% url 'like_profile' %}" method="post">
+                    {% csrf_token %}
+                    {% if is_liked %}
+                        <button type="submit" name="profile_id" value="{{ user.id }}" class="btn btn-danger">Dislike</button>
+                    {% else %}
+                        <button type="submit" name="profile_id" value="{{ user.id }}" class="btn btn-primary">Like</button>
+                    {% endif %}
+                </form>
+                    </dd>
+
+                    <dt class="col-sm-3 text-right">Number of likes from users</dt>
+                    <dd class="col-sm-9">{{ total_likes }} Like{{ total_likes|pluralize }}</dd>
+
+                </dl>
+
+            <a>{{ user.id }}</a>
+
+            <div class="col-sm my-2 my-sm-0 justify-content-star">
+                    <a href="{% url 'create_dialog' user_id=user.id  %}" class="btn btn btn-success">Start dialogue</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,125 @@
+html{
+    position: relative;
+    min-height: 100px;
+
+
+}
+
+
+
+
+
+h1{
+    font-family: Tahoma, serif;
+    font-size: 14px;
+    color: darkblue;;
+}
+
+
+
+
+.block{
+    width: 100px;
+    height: 100px;
+    float: left;
+    margin: 10px;
+    background-color: #f5dd5d;
+    box-shadow: 0 0 3px 3px #b1b1b1;
+}
+
+
+.home-bg {
+        background-image: url('../socialmedia.jpeg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 100%;
+}
+
+
+
+
+body{
+    background-image: url('../images/bg.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100%;
+    background-color: #0069d9;
+    margin-bottom: 150px;
+}
+
+.footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right:0;
+    height: 130px;
+    padding: 15px;
+
+}
+
+.content{
+    border: 1px solid #e2e2e2;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 0 5px -4px rgba(128, 128, 128, 0.69);
+    background: tan;
+    min-height: 500px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+ul.errorlist{
+    color: red;
+    list-style: none;
+    font-size: 12px;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #e0a800;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+}
+
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #1b1e21;
+  display: block;
+  transition: 0.3s;
+}
+
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-right: 50px;
+}
+
+
+#main {
+  transition: margin-left .5s;
+  padding: 20px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}

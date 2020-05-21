@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'meeting/css/bootstrap.css' %}">
+     <link rel="stylesheet" href="{% static 'meeting/css/bootstrap-grid.css' %}">
+    <link rel="stylesheet" href="{% static 'meeting/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'meeting/js/scripts.js' %}">
+    <link rel="stylesheet" href="{% static 'meeting/css/font-awesome.css' %}">
+     <link rel="stylesheet" href="{% static 'meeting/css/bootstrap-social.css' %}">
+    <script src="https://kit.fontawesome.com/f86a744541.js" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+<div class="container">
+    {% include 'navbar.html' %}
+    {% include 'blocks/messages.html' %}
+    {% block content %}
+
+    {% endblock content %}
+    {% include 'footer.html' %}
+</div>
+</body>
+</html>
