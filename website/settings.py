@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'meeting',
+    'crispy_forms',
     'bootstrap4',
     'django.contrib.sites',
     'allauth',
@@ -190,6 +191,6 @@ EMAIL_HOST_PASSWORD = 'xsmtpsib-f7b2a57ca2138018f7c011cc3aa3fd0a21a78ba4f99510f9
 ADMIN_EMAIL = 'finallyars99@gmail.com'
 
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTH_PROFILE_MODULE = 'meeting.Profile'
